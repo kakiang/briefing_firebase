@@ -1,5 +1,5 @@
 import 'package:briefing/model/channel.dart';
-import 'package:briefing/widget/error_widget.dart';
+import 'package:briefing/widgets/error_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +18,6 @@ class _ChannelSliverListState extends State<ChannelSliverList> {
     super.initState();
   }
 
-  Future<void> _onRefresh() async {}
-
   @override
   Widget build(BuildContext context) {
     return SliverList(
@@ -28,36 +26,44 @@ class _ChannelSliverListState extends State<ChannelSliverList> {
             stream: _firestore.collection('channels').snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.builder(
+                List<DocumentSnapshot> documents = snapshot.data.documents;
+
+                if (documents.length > 0) {
+                  return ListView.builder(
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: snapshot.data.documents.length,
+                    itemCount: documents.length,
                     itemBuilder: (BuildContext context, int index) {
                       return channelListTile(
-                          Channel.fromSnapshot(snapshot.data.documents[index]),
-                          index);
-                    });
-              } else if (snapshot.hasError) {
-                debugPrint("!!!snapshot error ${snapshot.error.toString()}");
-                return GestureDetector(
-                  onTap: _onRefresh,
-                  child: StreamErrorWidget(
-                    message: [
-                      '${snapshot.error}',
-                      'Keep calm, and tap to retry',
-                    ],
-                  ),
-                );
-              } else {
-                return Center(
-                  child: Container(
-                    margin: EdgeInsets.all(8.0),
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(),
-                  ),
+                          Channel.fromSnapshot(documents[index]), index);
+                    },
+                  );
+                }
+
+                return StreamErrorWidget(
+                  message: [
+                    'Please check your internet connection, and retry again',
+                  ],
                 );
               }
+              if (snapshot.hasError) {
+                debugPrint("!!!snapshot error ${snapshot.error.toString()}");
+                return StreamErrorWidget(
+                  message: [
+                    '${snapshot.error.toString()}',
+                    'Keep calm, and retry again',
+                  ],
+                );
+              }
+
+              return Center(
+                child: Container(
+                  margin: EdgeInsets.all(8.0),
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
       ]),
     );

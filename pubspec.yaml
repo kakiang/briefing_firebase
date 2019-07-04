@@ -27,6 +27,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/no_internet.png
+    - assets/images/ic_africa.png
+    - assets/images/ic_africa_filled.png
   fonts:
     - family: Libre_Franklin
       fonts:

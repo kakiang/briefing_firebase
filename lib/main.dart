@@ -1,7 +1,7 @@
 import 'package:briefing/theme.dart';
-import 'package:briefing/widget/briefing_sliver_list.dart';
-import 'package:briefing/widget/channel_sliver_list.dart';
-import 'package:briefing/widget/main_sliverappbar.dart';
+import 'package:briefing/widgets/briefing_sliver_list.dart';
+import 'package:briefing/widgets/channel_sliver_list.dart';
+import 'package:briefing/widgets/main_sliverappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -72,31 +72,43 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             bottomNavigationBar: Theme(
               data: Theme.of(context).copyWith(
-                canvasColor: Colors.white,
                 primaryColor: Theme.of(context).accentIconTheme.color,
                 textTheme: Theme.of(context).textTheme.copyWith(
-                    caption: TextStyle(
-                        fontFamily: 'Libre_Franklin',
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey[700])),
+                      caption: TextStyle(
+                        fontFamily: 'CrimsonText',
+                        fontWeight: FontWeight.w900,
+                        color: Colors.grey[700],
+                      ),
+                    ),
               ),
-              child: BottomNavigationBar(
-                  selectedFontSize: 16,
-                  unselectedFontSize: 16,
-                  elevation: 10.0,
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.format_list_bulleted),
-                      title: Text('Headlines'),
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.filter_none),
-                      title: Text('Newsstand'),
-                    ),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(2.0, -2.0),
+                        spreadRadius: 1.0,
+                        color: Colors.grey[200],
+                        blurRadius: 3.0),
                   ],
-                  currentIndex: _selectedIndex,
-                  onTap: _onItemTapped,
-                  type: BottomNavigationBarType.fixed),
+                ),
+                child: BottomNavigationBar(
+                    selectedFontSize: 15,
+                    unselectedFontSize: 15,
+                    elevation: 10.0,
+                    items: <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.language),
+                        title: Text('Headlines'),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.filter_none),
+                        title: Text('Newsstand'),
+                      ),
+                    ],
+                    currentIndex: _selectedIndex,
+                    onTap: _onItemTapped,
+                    type: BottomNavigationBarType.fixed),
+              ),
             )),
       ),
     );

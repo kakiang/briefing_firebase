@@ -1,6 +1,6 @@
 import 'package:briefing/model/article.dart';
-import 'package:briefing/widget/article_bottom_section.dart';
-import 'package:briefing/widget/article_title_section.dart';
+import 'package:briefing/widgets/article_bottom_section.dart';
+import 'package:briefing/widgets/article_title_section.dart';
 import 'package:flutter/material.dart';
 
 class BriefingCard extends StatefulWidget {

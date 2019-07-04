@@ -1,5 +1,5 @@
 import 'package:briefing/model/article.dart';
-import 'package:briefing/widget/article_thumbnail.dart';
+import 'package:briefing/widgets/article_thumbnail.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -21,14 +21,13 @@ class ArticleTitleSection extends StatelessWidget {
                 CachedNetworkImage(
                   imageUrl: article.channel.iconUrl ?? '',
                   imageBuilder: (context, imageProvider) => Container(
-                        width: 38.0,
+                        width: 32.0,
                         height: 24.0,
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
-                            border: Border.all(color: Colors.grey[300]),
                             borderRadius: BorderRadius.circular(3.0),
                             image: DecorationImage(
-                                image: imageProvider, fit: BoxFit.cover)),
+                                image: imageProvider, fit: BoxFit.fitWidth)),
                         margin: EdgeInsets.only(right: 8.0),
                       ),
                   placeholder: (context, url) => Container(),

@@ -1,4 +1,4 @@
-import 'package:briefing/widget/channel_sliver_list.dart';
+import 'package:briefing/widgets/channel_sliver_list.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatelessWidget {

@@ -4,24 +4,23 @@ import 'package:flutter/material.dart';
 ThemeData buildAppTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
-//    accentColor: themeAppGrey800,
-    accentColor: themeAppIndigo,
-    primaryColor: themeAppWhite100,
+    primaryColor: themeAppWhite,
+    accentColor: themeAppBlue700,
     primaryColorBrightness: Brightness.light,
-    bottomAppBarColor: themeAppWhite100,
+    bottomAppBarColor: themeAppWhite,
     buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: themeAppWhite100,
+      buttonColor: themeAppWhite,
       textTheme: ButtonTextTheme.normal,
     ),
-    scaffoldBackgroundColor: themeAppBackgroundWhite,
-    cardColor: themeAppBackgroundWhite,
-    textSelectionColor: themeAppGrey600,
+    scaffoldBackgroundColor: themeAppWhite,
+    cardColor: themeAppWhite,
+    textSelectionColor: themeAppGrey500,
     errorColor: themeAppErrorRed,
-    canvasColor: Colors.white,
+    canvasColor: themeAppWhite,
     textTheme: _buildAppTextTheme(base.textTheme),
     primaryTextTheme: _buildAppTextTheme(base.primaryTextTheme),
     accentTextTheme: _buildAppTextTheme(base.accentTextTheme),
-    accentIconTheme: IconThemeData().copyWith(color: Colors.blue[800]),
+    accentIconTheme: IconThemeData().copyWith(color: themeAppBlue700),
     primaryIconTheme: base.iconTheme.copyWith(color: themeAppGrey700),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(),
@@ -59,6 +58,7 @@ TextTheme _buildAppTextTheme(TextTheme base) {
         ),
         caption: base.caption.copyWith(
           fontFamily: 'Libre_Franklin',
+          color: themeAppGrey700,
           fontSize: 16.0,
         ),
         button: base.button.copyWith(
@@ -72,7 +72,6 @@ TextTheme _buildAppTextTheme(TextTheme base) {
         ),
       )
       .apply(
-//        fontFamily: 'Merriweather',
         displayColor: themeAppGrey800,
         bodyColor: themeAppGrey800,
       );
