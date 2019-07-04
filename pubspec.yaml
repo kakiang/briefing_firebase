@@ -1,0 +1,44 @@
+name: briefing
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  cloud_firestore: ^0.12.5+2
+  rxdart: ^0.22.0
+  intl: ^0.15.8
+  url_launcher:
+  share: ^0.6.1+1
+  cached_network_image: ^1.0.0
+
+  flutter_custom_tabs: ^0.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/no_internet.png
+  fonts:
+    - family: Libre_Franklin
+      fonts:
+        - asset: assets/fonts/Libre_Franklin/LibreFranklin-Regular.ttf
+        - asset: assets/fonts/Libre_Franklin/LibreFranklin-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Libre_Franklin/LibreFranklin-Bold.ttf
+          weight: 700
+    - family: CrimsonText
+      fonts:
+        - asset: assets/fonts/Crimson_Text/CrimsonText-Regular.ttf
+        - asset: assets/fonts/Crimson_Text/CrimsonText-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Crimson_Text/CrimsonText-Bold.ttf
+          weight: 700
