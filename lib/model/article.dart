@@ -34,7 +34,7 @@ class Article {
         summary = data['summary'],
         channel = Channel.fromMap(data['channel']);
 
-  Article.fromSnapshot(DocumentSnapshot snapshot)
+  Article.fromDocumentSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   Map<String, dynamic> toMap() {

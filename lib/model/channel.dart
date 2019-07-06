@@ -24,7 +24,8 @@ class Channel {
         linkRss = data['rss_link'],
         iconUrl = data['icon_url'];
 
-  Channel.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data);
+  Channel.fromDocumentSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data);
 
   Map<String, dynamic> toMap() {
     return {

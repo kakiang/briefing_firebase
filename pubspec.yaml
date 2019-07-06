@@ -13,7 +13,6 @@ dependencies:
   cloud_firestore: ^0.12.5+2
   rxdart: ^0.22.0
   intl: ^0.15.8
-  url_launcher:
   share: ^0.6.1+1
   cached_network_image: ^1.0.0
 

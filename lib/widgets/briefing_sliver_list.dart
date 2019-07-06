@@ -1,11 +1,10 @@
-import 'dart:async';
-
+import 'package:briefing/bloc/bloc_article.dart';
+import 'package:briefing/bloc/bloc_provider.dart';
 import 'package:briefing/model/article.dart';
+import 'package:briefing/util/url_launcher.dart';
 import 'package:briefing/widgets/briefing_card.dart';
 import 'package:briefing/widgets/error_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class BriefingSliverList extends StatefulWidget {
   const BriefingSliverList({Key key}) : super(key: key);
@@ -15,48 +14,93 @@ class BriefingSliverList extends StatefulWidget {
 }
 
 class _BriefingSliverListState extends State<BriefingSliverList> {
-  final _firestore = Firestore.instance;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  int dropdownValue = 24;
+  bool switchValue = true;
 
   @override
   Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme.caption;
+    final articleBloc = BlocProvider.of<ArticleBloc>(context);
     return SliverList(
       delegate: SliverChildListDelegate([
-        StreamBuilder<QuerySnapshot>(
-          stream: _firestore
-              .collection('articles')
-              .where('timestamp',
-                  isGreaterThanOrEqualTo:
-                      DateTime.now().subtract(Duration(hours: 24)))
-              .orderBy('timestamp', descending: true)
-              .snapshots(),
+        Container(
+          height: 40,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(color: Colors.grey[300], width: 2.0))),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          margin: EdgeInsets.only(bottom: 12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text('Briefing', style: style),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: DropdownButton<int>(
+                      underline: Container(),
+                      elevation: 10,
+                      value: dropdownValue,
+                      onChanged: (int newValue) {
+                        setState(() {
+                          if (newValue != null) {
+                            dropdownValue = newValue;
+                            articleBloc.durationSink.add(newValue);
+                          }
+                        });
+                      },
+                      items: [48, 24, 12, 3]
+                          .map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(
+                            'Since ${value}h',
+                            style: style,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Text('Recent first', style: style),
+                  Switch.adaptive(
+                      value: switchValue,
+                      onChanged: (bool value) {
+                        setState(() {
+                          switchValue = value;
+                          articleBloc.descendingSink.add(switchValue);
+                        });
+                      }),
+                ],
+              ),
+            ],
+          ),
+        ),
+        StreamBuilder<List<Article>>(
+          stream: articleBloc.articlesStream,
           builder: (context, snapshot) {
             debugPrint("!!!snapshot state: ${snapshot.connectionState}!!!");
-
+            debugPrint("!!!snapshot.hasData: ${snapshot.hasData}!!!");
+            debugPrint("!!!snapshot.data.length: ${snapshot?.data?.length}!!!");
             if (snapshot.hasData) {
-              List<DocumentSnapshot> documents = snapshot.data.documents;
-              if (documents.length > 0) {
-                return ListView.builder(
-                  padding: EdgeInsets.all(12.0),
+              if (snapshot.data.length > 0) {
+                return ListView.separated(
+                  separatorBuilder: (context, index) => Divider(),
+                  padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
                   physics: ScrollPhysics(),
-                  itemCount: documents.length,
                   shrinkWrap: true,
+                  itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var article = Article.fromSnapshot(documents[index]);
                     return Container(
                       child: InkWell(
-                        child: BriefingCard(article: article),
+                        child: BriefingCard(article: snapshot.data[index]),
                         onTap: () {
-                          _launchURL(context, article.link);
+                          UrlLauncher.launchURL(
+                              context, snapshot.data[index].link);
                         },
                       ),
                     );
@@ -66,7 +110,7 @@ class _BriefingSliverListState extends State<BriefingSliverList> {
 
               return StreamErrorWidget(
                 message: [
-                  'Please check your internet connection, and retry again',
+                  'No articles found',
                 ],
               );
             }
@@ -93,26 +137,5 @@ class _BriefingSliverListState extends State<BriefingSliverList> {
         ),
       ]),
     );
-  }
-
-  Future<void> _launchURL(BuildContext context, String link) async {
-    try {
-      await launch(
-        link,
-        option: new CustomTabsOption(
-          toolbarColor: Theme.of(context).primaryColor,
-          enableDefaultShare: true,
-          enableUrlBarHiding: true,
-          showPageTitle: true,
-          enableInstantApps: true,
-          animation: CustomTabsAnimation.slideIn(),
-          extraCustomTabs: <String>[
-            'org.mozilla.firefox',
-          ],
-        ),
-      );
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 }
