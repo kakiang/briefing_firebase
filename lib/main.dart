@@ -1,3 +1,6 @@
+import 'package:briefing/bloc/bloc_article.dart';
+import 'package:briefing/bloc/bloc_channel.dart';
+import 'package:briefing/bloc/bloc_provider.dart';
 import 'package:briefing/theme.dart';
 import 'package:briefing/widgets/briefing_sliver_list.dart';
 import 'package:briefing/widgets/channel_sliver_list.dart';
@@ -38,8 +41,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _pages = {
-      "Briefing": BriefingSliverList(),
-      "Newsstands": ChannelSliverList(),
+      "Briefing": BlocProvider<ArticleBloc>(
+        bloc: ArticleBloc(),
+        child: BriefingSliverList(),
+      ),
+      "Newsstands": BlocProvider<ChannelListBloc>(
+        bloc: ChannelListBloc(),
+        child: ChannelSliverList(),
+      ),
     };
   }
 

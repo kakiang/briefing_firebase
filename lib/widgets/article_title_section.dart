@@ -21,8 +21,8 @@ class ArticleTitleSection extends StatelessWidget {
                 CachedNetworkImage(
                   imageUrl: article.channel.iconUrl ?? '',
                   imageBuilder: (context, imageProvider) => Container(
-                        width: 32.0,
-                        height: 24.0,
+                        width: 28.0,
+                        height: 22.0,
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.circular(3.0),

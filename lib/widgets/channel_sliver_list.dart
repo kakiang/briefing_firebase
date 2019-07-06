@@ -1,41 +1,30 @@
+import 'package:briefing/bloc/bloc_channel.dart';
+import 'package:briefing/bloc/bloc_provider.dart';
 import 'package:briefing/model/channel.dart';
+import 'package:briefing/util/url_launcher.dart';
 import 'package:briefing/widgets/error_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class ChannelSliverList extends StatefulWidget {
-  @override
-  _ChannelSliverListState createState() => _ChannelSliverListState();
-}
-
-class _ChannelSliverListState extends State<ChannelSliverList> {
-  final Firestore _firestore = Firestore.instance;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class ChannelSliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ChannelListBloc bloc = BlocProvider.of<ChannelListBloc>(context);
     return SliverList(
       delegate: SliverChildListDelegate([
-        StreamBuilder<QuerySnapshot>(
-            stream: _firestore.collection('channels').snapshots(),
+        StreamBuilder<List<Channel>>(
+            stream: bloc.channelStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<DocumentSnapshot> documents = snapshot.data.documents;
-
-                if (documents.length > 0) {
+                if (snapshot.data.length > 0) {
                   return ListView.builder(
+                    padding: EdgeInsets.all(12.0),
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: documents.length,
+                    itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return channelListTile(
-                          Channel.fromSnapshot(documents[index]), index);
+                          context, snapshot.data[index], index);
                     },
                   );
                 }
@@ -69,9 +58,9 @@ class _ChannelSliverListState extends State<ChannelSliverList> {
     );
   }
 
-  Container channelListTile(Channel channel, int index) {
+  Container channelListTile(BuildContext context, Channel channel, int index) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      padding: const EdgeInsets.all(4.0),
       child: ListTile(
         leading: Container(
           width: 44.0,
@@ -115,9 +104,7 @@ class _ChannelSliverListState extends State<ChannelSliverList> {
           ),
         ),
         onTap: () async {
-          if (await canLaunch(channel.link)) {
-            launch(channel.link);
-          }
+          UrlLauncher.launchURL(context, channel.link);
         },
       ),
     );
