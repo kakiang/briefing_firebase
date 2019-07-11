@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 class ArticleBloc extends BlocBase {
   final _repository = Repository();
   final durationSubject = BehaviorSubject<int>.seeded(24);
-  final descendingSubject = BehaviorSubject<bool>.seeded(false);
+  final descendingSubject = BehaviorSubject<bool>.seeded(true);
 
   ArticleBloc();
 

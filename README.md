@@ -2,4 +2,12 @@
 
 The version of the briefing app with firestore as database instead of sqflite.
 
-<img src="screenshot.gif" width="250">
+![image](screenshot.gif "screenshot")
+
+## Resources
+
+- Reactive Programming - Streams - BLoC - Practical Use Cases <https://www.didierboelens.com/2018/12/reactive-programming---streams---bloc---practical-use-cases/>
+
+- Get started with Cloud Firestore <https://firebase.google.com/docs/firestore/quickstart>
+
+- Flutter plugin for Cloud Firestore <https://github.com/flutter/plugins/tree/master/packages/cloud_firestore>
